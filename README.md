@@ -58,23 +58,26 @@
 Если у вас еще нет `Dockerfile`, вот пример, который можно использовать. Создайте файл с именем `Dockerfile` в корневой директории проекта и добавьте следующее содержимое:
 
 ```dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["<название_вашего_проекта>.csproj", "./"]
-RUN dotnet restore "./<название_вашего_проекта>.csproj"
+COPY ["BoomTestTask/BoomTestTask.csproj", "BoomTestTask/"]
+RUN dotnet restore "./BoomTestTask/BoomTestTask.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "<название_вашего_проекта>.csproj" -c Release -o /app/build
+WORKDIR "/src/BoomTestTask"
+RUN dotnet build "./BoomTestTask.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "<название_вашего_проекта>.csproj" -c Release -o /app/publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./BoomTestTask.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "<название_вашего_проекта>.dll"]
+ENTRYPOINT ["dotnet", "BoomTestTask.dll"]

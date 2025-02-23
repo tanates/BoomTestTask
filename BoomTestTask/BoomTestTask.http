@@ -1,0 +1,6 @@
+@BoomTestTask_HostAddress = http://localhost:5167
+
+GET {{BoomTestTask_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

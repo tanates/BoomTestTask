@@ -13,9 +13,8 @@
 1.  **Клонируйте репозиторий:**
 
     ```bash
-    git clone <ваш_репозиторий_URL>
-    cd <название_вашего_репозитория>
-    ```
+    git clone <(https://github.com/tanates/BoomTestTask.git)>
+      ```
 
 2.  **Сборка Docker образа:**
 

@@ -13,7 +13,7 @@
 1.  **Клонируйте репозиторий:**
 
     ```bash
-    git clone (https://github.com/tanates/BoomTestTask.git)
+    git clone https://github.com/tanates/BoomTestTask.git
       ```
 
 2.  **Сборка Docker образа:**
